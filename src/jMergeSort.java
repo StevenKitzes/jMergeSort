@@ -85,6 +85,71 @@ public class jMergeSort {
         System.out.println(s1.equals(s2));
         System.out.println("s1's value is: "+s1.toString());
 
+        sortables = mergeSort(sortables);
 
+        Sortable[] oddList = new Sortable[11];
+        for (int i = 0; i < oddList.length; i++) {
+            oddList[i] = new Sortable();
+        }
+        oddList = mergeSort(oddList);
+
+    }
+
+    public static Sortable[] mergeSort(Sortable[] list) {
+        int length = list.length;
+        System.out.println("- - - - -\nList was passed into mergeSort() with length: "+length);
+        System.out.print("Contents: ");
+        for( int i = 0; i < length; i++ ) {
+            System.out.print((i==0?"":", ")+list[i].getValue());
+        }
+        System.out.println(".");
+
+        if(length <= 1) {
+            return list;
+        }
+
+        int halfLength = (int)length / 2;
+        Sortable[] half1 = new Sortable[halfLength];
+        Sortable[] half2 = new Sortable[length - halfLength];
+
+        for( int i = 0; i < length; i++ ) {
+            if( i < halfLength ) {
+                half1[i] = list[i];
+            }
+            else {
+                half2[i-halfLength] = list[i];
+            }
+        }
+
+        half1 = mergeSort(half1);
+        half2 = mergeSort(half2);
+
+        int stepper1 = 0, stepper2 = 0;
+
+        for( int i = 0; i < length; i++ ) {
+            if( stepper1 == half1.length ) {
+                list[i] = half2[stepper2];
+                stepper2++;
+            }
+            else if( stepper2 == half2.length) {
+                list[i] = half1[stepper1];
+                stepper1++;
+            }
+            else if( half1[stepper1].getValue() < half2[stepper2].getValue() ) {
+                list[i] = half1[stepper1];
+                stepper1++;
+            }
+            else {
+                list[i] = half2[stepper2];
+                stepper2++;
+            }
+        }
+
+        System.out.print("Returning list: ");
+        for( int i = 0; i < length; i++ ) {
+            System.out.print((i==0?"":", ")+list[i].getValue());
+        }
+        System.out.println(".");
+        return list;
     }
 }
